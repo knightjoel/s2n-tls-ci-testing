@@ -430,6 +430,11 @@ static S2N_RESULT s2n_x509_validator_verify_cert_chain(struct s2n_x509_validator
                 S2N_ERR_INTERNAL_LIBCRYPTO_ERROR);
     }
 
+    #if defined(LIBRESSL_VERSION_NUMBER)
+    RESULT_GUARD_OSSL(X509_VERIFY_PARAM_clear_flags(param, X509_V_FLAG_CB_ISSUER_CHECK),
+            S2N_ERR_INTERNAL_LIBCRYPTO_ERROR);
+    #endif
+
     uint64_t current_sys_time = 0;
     RESULT_GUARD(s2n_config_wall_clock(conn->config, &current_sys_time));
 
