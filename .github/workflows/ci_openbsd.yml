@@ -1,0 +1,41 @@
+name: OpenBSD
+
+on:
+  pull_request:
+    branches:
+      - main
+  # XXX
+  push:
+    branches:
+      - chore/openbsd-ci
+
+jobs:
+  testopenbsd:
+    runs-on: macos-12
+    name: CI OpenBSD
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and test in OpenBSD
+        id: test
+        uses: vmactions/openbsd-vm@v0.1.2
+        with:
+          mem: 2048
+          prepare: |
+            mv /Users/runner /home
+            rm -rf /Users
+            ln -s /home /Users
+            ln -sf /home/work /root/work
+            pkg_add cmake ninja
+            pkg_info
+          run: |
+            sysctl -n kern.version
+            .github/s2n_openbsd.sh
+      ## XXX
+      #- name: Upload test results
+      #  if: always()
+      #  uses: actions/upload-artifact@master
+      #  with:
+      #    name: all_test_output
+      #    path: |
+      #      release/Testing/Temporary
+      #      build/Testing/Temporary
