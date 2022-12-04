@@ -30,12 +30,11 @@ jobs:
           run: |
             sysctl -n kern.version
             .github/s2n_openbsd.sh
-      ## XXX
-      #- name: Upload test results
-      #  if: always()
-      #  uses: actions/upload-artifact@master
-      #  with:
-      #    name: all_test_output
-      #    path: |
-      #      release/Testing/Temporary
-      #      build/Testing/Temporary
+      - name: upload test results
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: all_test_output
+          path: |
+            release/testing/temporary
+            build/testing/temporary
