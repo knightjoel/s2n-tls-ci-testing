@@ -25,7 +25,7 @@ jobs:
             rm -rf /Users
             ln -s /home /Users
             ln -sf /home/work /root/work
-            pkg_add cmake ninja
+            pkg_add ninja cmake
             pkg_info
           run: |
             sysctl -n kern.version
